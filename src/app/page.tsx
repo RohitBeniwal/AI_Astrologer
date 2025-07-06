@@ -1,95 +1,121 @@
-import Image from "next/image";
+"use client";
+import React, { useState, useRef, FormEvent } from "react";
+import ReactMarkdown from "react-markdown";
 import styles from "./page.module.css";
 
+const MODEL_OPTIONS = [
+    { label: "Groq", value: "groq" }, // Add Groq option
+    { label: "OpenRouter", value: "openrouter" },
+  { label: "Gemini", value: "gemini" },
+  
+
+];
+
 export default function Home() {
+  const [messages, setMessages] = useState<{ text: string; from: "user" | "bot" }[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [model, setModel] = useState("groq");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSend = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    const userMessage = input;
+    setMessages((msgs) => [...msgs, { text: userMessage, from: "user" }]);
+    setInput("");
+    setLoading(true);
+
+    // Choose API route based on selected model
+    let apiRoute = "/api/gemini";
+    if (model === "openrouter") apiRoute = "/api/openrouter";
+    else if (model === "groq") apiRoute = "/api/groq";
+
+    try {
+      const res = await fetch(apiRoute, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
+      const data = await res.json();
+      setMessages((msgs) => [
+        ...msgs,
+        { text: data.text, from: "bot" },
+      ]);
+    } catch {
+      setMessages((msgs) => [
+        ...msgs,
+        { text: "Sorry, something went wrong.", from: "bot" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+      <div className={styles.chatContainer}>
+        <div className={styles.chatHeader}>Chat UI</div>
+        <div className={styles.messagesArea}>
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`${styles.messageRow} ${msg.from === "user" ? styles.user : ""}`}
+            >
+              <span className={styles.messageBubble}>
+                {msg.from === "bot" ? (
+                  <ReactMarkdown>{msg.text}</ReactMarkdown>
+                ) : (
+                  msg.text
+                )}
+              </span>
+            </div>
+          ))}
+          {loading && (
+            <div className={styles.messageRow}>
+              <span className={styles.messageBubble}>Thinking...</span>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <form className={styles.inputArea} onSubmit={handleSend}>
+          <select
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            style={{
+              borderRadius: 8,
+              padding: "8px 12px",
+              border: "1px solid #ccc",
+              fontSize: 16,
+              marginRight: 8,
+              background: "#232a36",
+              color: "#fff",
+            }}
+            disabled={loading}
+          >
+            {MODEL_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <input
+            className={styles.inputBox}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            disabled={loading}
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <button className={styles.sendButton} type="submit" disabled={loading}>
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
