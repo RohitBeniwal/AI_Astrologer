@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useRef, FormEvent } from "react";
+import React, { useState, useRef, useEffect, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import styles from "./page.module.css";
+import ApiInfo from "./components/ApiInfo";
 
 const MODEL_OPTIONS = [
     { label: "Groq", value: "groq" }, // Add Groq option
@@ -17,10 +18,18 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [model, setModel] = useState("groq");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Focus the input field when component mounts
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleSend = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,6 +38,13 @@ export default function Home() {
     setMessages((msgs) => [...msgs, { text: userMessage, from: "user" }]);
     setInput("");
     setLoading(true);
+    
+    // Keep focus on input field after sending message
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
 
     // Choose API route based on selected model
     let apiRoute = "/api/gemini";
@@ -59,7 +75,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <div className={styles.chatContainer}>
-        <div className={styles.chatHeader}>Chat UI</div>
+        <div className={styles.chatHeader}>Cosmic Oracle</div>
         <div className={styles.messagesArea}>
           {messages.map((msg, idx) => (
             <div
@@ -96,10 +112,11 @@ export default function Home() {
               color: "#fff",
             }}
             disabled={loading}
+            title="Select your preferred cosmic channel"
           >
             {MODEL_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
-                {opt.label}
+                {opt.label} {opt.value === 'groq' ? '✨' : opt.value === 'openrouter' ? '🌌' : '🔮'}
               </option>
             ))}
           </select>
@@ -108,13 +125,16 @@ export default function Home() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Ask the stars about your destiny..."
             disabled={loading}
+            ref={inputRef}
+            autoFocus
           />
           <button className={styles.sendButton} type="submit" disabled={loading}>
             Send
           </button>
         </form>
+        <ApiInfo />
       </div>
     </div>
   );

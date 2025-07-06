@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" fill="none">
+  <!-- Base/Stand -->
+  <path d="M35 100C35 100 30 110 50 110C70 110 65 100 65 100" fill="#8B4513" stroke="#8B4513" stroke-width="1"/>
+  <ellipse cx="50" cy="100" rx="15" ry="5" fill="#8B4513" stroke="#8B4513" stroke-width="1"/>
+  
+  <!-- Crystal Ball -->
+  <circle cx="50" cy="60" r="30" fill="url(#crystal-gradient)" stroke="#E6E6FA" stroke-width="1"/>
+  
+  <!-- Reflections -->
+  <ellipse cx="40" cy="45" rx="5" ry="7" fill="white" fill-opacity="0.4" transform="rotate(-15 40 45)"/>
+  <ellipse cx="60" cy="50" rx="3" ry="4" fill="white" fill-opacity="0.3"/>
+  
+  <!-- Stars inside -->
+  <path d="M45 55L46 58L49 58L47 60L48 63L45 61L42 63L43 60L41 58L44 58L45 55Z" fill="#FFD700" fill-opacity="0.7"/>
+  <path d="M55 65L56 68L59 68L57 70L58 73L55 71L52 73L53 70L51 68L54 68L55 65Z" fill="#FFD700" fill-opacity="0.7"/>
+  <path d="M50 75L51 78L54 78L52 80L53 83L50 81L47 83L48 80L46 78L49 78L50 75Z" fill="#FFD700" fill-opacity="0.5"/>
+  
+  <!-- Moon inside -->
+  <path d="M60 55C62 60 62 70 60 75C65 73 70 70 70 65C70 60 65 57 60 55Z" fill="#FFD700" fill-opacity="0.4"/>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <radialGradient id="crystal-gradient" cx="50" cy="60" r="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E6E6FA" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#9370DB" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4B0082" stop-opacity="0.4"/>
+    </radialGradient>
+  </defs>
+</svg>

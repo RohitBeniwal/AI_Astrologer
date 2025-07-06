@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" fill="none">
+  <!-- Small stars -->
+  <circle cx="20" cy="20" r="1" fill="white"/>
+  <circle cx="40" cy="10" r="1" fill="white"/>
+  <circle cx="60" cy="30" r="1" fill="white"/>
+  <circle cx="80" cy="15" r="1" fill="white"/>
+  <circle cx="100" cy="25" r="1" fill="white"/>
+  <circle cx="120" cy="10" r="1" fill="white"/>
+  <circle cx="140" cy="30" r="1" fill="white"/>
+  <circle cx="160" cy="20" r="1" fill="white"/>
+  <circle cx="180" cy="15" r="1" fill="white"/>
+  <circle cx="30" cy="40" r="1" fill="white"/>
+  <circle cx="50" cy="50" r="1" fill="white"/>
+  <circle cx="70" cy="60" r="1" fill="white"/>
+  <circle cx="90" cy="45" r="1" fill="white"/>
+  <circle cx="110" cy="55" r="1" fill="white"/>
+  <circle cx="130" cy="65" r="1" fill="white"/>
+  <circle cx="150" cy="50" r="1" fill="white"/>
+  <circle cx="170" cy="40" r="1" fill="white"/>
+  <circle cx="25" cy="75" r="1" fill="white"/>
+  <circle cx="45" cy="85" r="1" fill="white"/>
+  <circle cx="65" cy="80" r="1" fill="white"/>
+  <circle cx="85" cy="70" r="1" fill="white"/>
+  <circle cx="105" cy="90" r="1" fill="white"/>
+  <circle cx="125" cy="75" r="1" fill="white"/>
+  <circle cx="145" cy="85" r="1" fill="white"/>
+  <circle cx="165" cy="80" r="1" fill="white"/>
+  <circle cx="185" cy="70" r="1" fill="white"/>
+  
+  <!-- Medium stars -->
+  <path d="M35 25L37 30L42 30L38 33L39 38L35 35L31 38L32 33L28 30L33 30L35 25Z" fill="#FFD700"/>
+  <path d="M140 60L142 65L147 65L143 68L144 73L140 70L136 73L137 68L133 65L138 65L140 60Z" fill="#FFD700"/>
+  <path d="M75 85L77 90L82 90L78 93L79 98L75 95L71 98L72 93L68 90L73 90L75 85Z" fill="#FFD700"/>
+  
+  <!-- Large star -->
+  <path d="M175 50L178 58L186 58L180 63L182 71L175 66L168 71L170 63L164 58L172 58L175 50Z" fill="#FFD700"/>
+</svg>
